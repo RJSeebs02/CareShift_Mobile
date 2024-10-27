@@ -26,14 +26,13 @@ class _SchedulePageState extends State<SchedulePage> {
     _currentWeekStart = today.subtract(Duration(days: difference)); // Set to last Monday
   }
 
-  // Helper function to generate the time slots from 12:00 AM to 11:59 PM
+  // Helper function to generate the time slots from 12:00 AM to 11:00 PM (hourly)
   List<String> _generateTimeSlots() {
     List<String> timeSlots = [];
     for (int hour = 0; hour < 24; hour++) {
       String period = hour < 12 ? 'AM' : 'PM';
       int displayHour = hour == 0 ? 12 : (hour > 12 ? hour - 12 : hour);
-      timeSlots.add('$displayHour:00 $period');
-      timeSlots.add('$displayHour:30 $period');
+      timeSlots.add('$displayHour $period');
     }
     return timeSlots;
   }
@@ -66,7 +65,7 @@ class _SchedulePageState extends State<SchedulePage> {
     // List of days for the top row
     final List<String> daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-    // Generate time slots (every 30 minutes from 12:00 AM to 11:59 PM)
+    // Generate time slots (every 1 hour from 12:00 AM to 11:00 PM)
     final List<String> timeSlots = _generateTimeSlots();
 
     // Get the actual dates of the week
@@ -109,7 +108,7 @@ class _SchedulePageState extends State<SchedulePage> {
                 child: Table(
                   border: TableBorder.all(),
                   columnWidths: {
-                    0: FixedColumnWidth(80), // Fixed width for time column
+                    0: FixedColumnWidth(50), // Fixed width for time column
                   },
                   children: [
                     // The first row with the word "Time" in the top-left corner, and the days of the week and actual dates
