@@ -89,9 +89,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   Text('Department: ${nurseData!['nurse_department']}'),
                   const SizedBox(height: 20),   
                   QrImageView(
-                    data: jsonEncode(nurseData), 
+                    data: jsonEncode({'nurse_id': nurseId}),
                     version: QrVersions.auto,    
-                    size: 200.0,                
+                    size: 300.0,                
                   ),
                 ],
               ),
