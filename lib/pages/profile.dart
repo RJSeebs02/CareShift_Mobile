@@ -39,18 +39,18 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> fetchNurseData(String nurseId) async {
     try {
       final response = await http.get(
-        Uri.parse('https://russgarde03.helioho.st/serve/nurse/read.php?nurse_id=$nurseId'),
+        Uri.parse('https://careshift.helioho.st/mobile/serve/nurse/read.php?nurse_id=$nurseId'),
       );
 
       if (response.statusCode == 200) {
-        // Check if response body is valid JSON
         try {
           final data = jsonDecode(response.body);
-          // Check if data is a map (single nurse data)
           if (data is Map<String, dynamic>) {
-            setState(() {
-              nurseData = data; // Directly assign the nurse data
-            });
+            if (mounted) {
+              setState(() {
+                nurseData = data;
+              });
+            }
           } else {
             print('Unexpected data format: $data');
           }
@@ -68,34 +68,44 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-      ),
-      body: nurseData == null
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Nurse ID: ${nurseData!['nurse_id']}'),
-                  Text('First Name: ${nurseData!['nurse_fname']}'),
-                  Text('Middle Name: ${nurseData!['nurse_mname']}'),
-                  Text('Last Name: ${nurseData!['nurse_lname']}'),
-                  Text('Email: ${nurseData!['nurse_email']}'),
-                  Text('Contact: ${nurseData!['nurse_contact']}'),
-                  Text('Position: ${nurseData!['nurse_position']}'),
-                  Text('Department: ${nurseData!['nurse_department']}'),
-                  const SizedBox(height: 20),   
-                  QrImageView(
-                    data: jsonEncode({'nurse_id': nurseId}),
-                    version: QrVersions.auto,    
-                    size: 300.0,                
+  return Scaffold(
+    body: nurseData == null
+        ? const Center(child: CircularProgressIndicator())
+        : Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Profile',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 16), // Adds some space between title and content
+
+                // Profile data
+                Text('Nurse ID: ${nurseData!['nurse_id']}'),
+                Text('First Name: ${nurseData!['nurse_fname']}'),
+                Text('Middle Name: ${nurseData!['nurse_mname']}'),
+                Text('Last Name: ${nurseData!['nurse_lname']}'),
+                Text('Email: ${nurseData!['nurse_email']}'),
+                Text('Contact: ${nurseData!['nurse_contact']}'),
+                Text('Position: ${nurseData!['nurse_position']}'),
+                Text('Department: ${nurseData!['department_name']}'),
+                const SizedBox(height: 20),
+                
+                // QR code
+                QrImageView(
+                  data: jsonEncode({'nurse_id': nurseId}),
+                  version: QrVersions.auto,
+                  size: 200.0,
+                ),
+              ],
             ),
-    );
-  }
+          ),
+  );
+}
+
 }

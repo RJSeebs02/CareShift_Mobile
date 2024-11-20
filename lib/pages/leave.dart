@@ -44,7 +44,7 @@ class _LeavePageState extends State<LeavePage> {
   Future<void> _fetchLeaveRecords() async {
   try {
     final response = await http.get(
-      Uri.parse('https://russgarde03.helioho.st/serve/leave/read.php?nurse_id=${widget.nurseId}'),
+      Uri.parse('https://careshift.helioho.st/mobile/serve/leave/read.php?nurse_id=${widget.nurseId}'),
     );
 
     // Print the response for debugging
@@ -113,7 +113,7 @@ class _LeavePageState extends State<LeavePage> {
     print('Request Body: $requestBody');
 
     final response = await http.post(
-      Uri.parse('https://russgarde03.helioho.st/serve/leave/create.php'),
+      Uri.parse('https://careshift.helioho.st/mobile/serve/leave/create.php'),
       headers: {'Content-Type': 'application/json'},
       body: requestBody,
     );
@@ -177,48 +177,66 @@ class _LeavePageState extends State<LeavePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView.builder(
-          itemCount: leaveRecords.length,
-          itemBuilder: (context, index) {
-            final leave = leaveRecords[index];
-            return InkWell(
-              onTap: () => _showLeaveDetails(context, leave),
-              child: Card(
-                margin: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Date Filed: ${leave.dateFiled}',
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Time Filed: ${leave.timeFiled}',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Status: ${leave.status}',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: _getStatusColor(leave.status),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+  return Scaffold(
+    body: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start, // Align children to the start (left)
+        children: [
+          Align(
+            alignment: Alignment.centerLeft, // Aligns text to the left
+            child: const Text(
+              'Leave Records', // Title text
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
-            );
-          },
-        ),
+            ),
+          ),
+          const SizedBox(height: 16), // Add some spacing between title and list
+          Expanded(
+            child: ListView.builder(
+              itemCount: leaveRecords.length,
+              itemBuilder: (context, index) {
+                final leave = leaveRecords[index];
+                return InkWell(
+                  onTap: () => _showLeaveDetails(context, leave),
+                  child: Card(
+                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Date Filed: ${leave.dateFiled}',
+                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Time Filed: ${leave.timeFiled}',
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Status: ${leave.status}',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: _getStatusColor(leave.status),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
+    ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _openAddLeaveDialog(context),
         child: const Icon(Icons.add),
@@ -226,13 +244,14 @@ class _LeavePageState extends State<LeavePage> {
     );
   }
 
+
   Color _getStatusColor(String? status) {
     switch (status) {
       case 'Pending':
         return Colors.orange;
-      case 'Accepted':
+      case 'Approved':
         return Colors.green;
-      case 'Rejected':
+      case 'Denied':
         return Colors.red;
       default:
         return Colors.black;

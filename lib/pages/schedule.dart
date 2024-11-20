@@ -68,7 +68,7 @@ class _SchedulePageState extends State<SchedulePage> {
     final weekStartDate = DateFormat('yyyy-MM-dd').format(_currentWeekStart);
     final weekEndDate = DateFormat('yyyy-MM-dd').format(_currentWeekStart.add(Duration(days: 6)));
 
-    final response = await http.get(Uri.parse('https://russgarde03.helioho.st/serve/schedule/read.php?nurse_id=$nurseId'));
+    final response = await http.get(Uri.parse('https://careshift.helioho.st/mobile/serve/schedule/read.php?nurse_id=$nurseId'));
 
     if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
@@ -165,6 +165,16 @@ void _showAlertDialog(String title, String message) {
         padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0),
         child: Column(
           children: [
+            Align(
+          alignment: Alignment.centerLeft, // Aligns text to the left
+          child: const Text(
+                'Schedule',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Text(

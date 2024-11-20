@@ -5,6 +5,7 @@ import 'package:careshift/pages/leave.dart';
 import 'package:careshift/pages/notifications.dart';
 import 'package:careshift/pages/profile.dart';
 import 'colors.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -53,7 +54,7 @@ class _HomePageState extends State<HomePage> {
     return <Widget>[
       SchedulePage(),
       LeavePage(nurseId: nurseId), // Pass the nurseId to LeavePage
-      NotificationPage(),
+      NotificationPage(nurseId: nurseId),
       ProfilePage(nurseId: nurseId), // Pass the nurseId to ProfilePage
     ];
   }

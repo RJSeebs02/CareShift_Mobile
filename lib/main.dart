@@ -10,6 +10,7 @@ Future<void> main() async {
 
   runApp(MaterialApp(
     title: 'CareShift',
+    debugShowCheckedModeBanner: false,
     initialRoute: validation == null || !validation ? '/' : '/home',
     routes: {
       '/': (context) => const LoginPage(),
@@ -17,3 +18,4 @@ Future<void> main() async {
     },
   ));
 }
+

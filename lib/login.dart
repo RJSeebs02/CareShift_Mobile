@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _login() async {
   final String email = emailController.text.trim();
   final String password = passwordController.text.trim();
-  const String apiUrl = 'https://russgarde03.helioho.st/serve/nurse/validate.php';
+  const String apiUrl = 'https://careshift.helioho.st/mobile/serve/nurse/validate.php';
 
   try {
     final response = await http.post(
@@ -90,27 +90,31 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.mainLightColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 50),
-                const Icon(Icons.medical_information, size: 100),
-                _buildTitle(),
-                _buildSubtitle(),
-                _buildLoginForm(),
-              ],
-            ),
+  return Scaffold(
+    backgroundColor: AppColors.mainLightColor,
+    body: SafeArea(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 50),
+              Image.asset(
+                '../assets/logo.png', 
+                height: 100,         
+                width: 100,          
+              ),
+              _buildTitle(),
+              _buildSubtitle(),
+              _buildLoginForm(),
+            ],
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildTitle() {
     return Text(
@@ -142,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
           TextField(
             cursorColor: AppColors.mainDarkColor,
             controller: emailController,
-            decoration: _inputDecoration('ID Number'),
+            decoration: _inputDecoration('Email'),
           ),
           const SizedBox(height: 25),
           TextField(
@@ -182,12 +186,12 @@ class _LoginPageState extends State<LoginPage> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
         decoration: BoxDecoration(
-          color: const Color(0xFF29CE7A),
+          color: const Color(0xFF7BB9FA),
           borderRadius: BorderRadius.circular(10),
         ),
         child: const Text(
           'Login',
-          style: TextStyle(color: Colors.white, fontSize: 16),
+          style: TextStyle(color: Color(0xFF181A1D), fontSize: 16),
         ),
       ),
     );
