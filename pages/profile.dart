@@ -100,7 +100,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 QrImageView(
                   data: jsonEncode({'nurse_id': nurseId}),
                   version: QrVersions.auto,
-                  size: 200.0,
+                  size: 400.0,
                 ),
               ],
             ),

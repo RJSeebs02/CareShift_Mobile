@@ -141,7 +141,7 @@ void _showAlertDialog(String title, String message) {
       height: 100,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
-        color: isShiftTime ? Colors.green : Colors.white,
+        color: isShiftTime ? Color.fromARGB(255, 127, 238, 131) : Colors.white,
       ),
       child: Center(
         child: Text(room, textAlign: TextAlign.center),
@@ -210,10 +210,10 @@ void _showAlertDialog(String title, String message) {
                     TableRow(
                       children: [
                         Container(
-                          color: Colors.grey[300],
+                          color: AppColors.mainColor,
                           height: 70,
                           child: Center(
-                            child: Text('Time', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                            child: Text('Time', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                           ),
                         ),
                         ...weekDates.asMap().entries.map((entry) {
@@ -222,15 +222,18 @@ void _showAlertDialog(String title, String message) {
                           String formattedDate = DateFormat('MMM d').format(date);
                           bool isToday = DateTime.now().isSameDay(date);
                           return Container(
-                            color: isToday ? const Color.fromARGB(255, 68, 255, 124).withOpacity(0.2) : Colors.grey[300],
+                            color: isToday ? Color.fromARGB(255, 255, 246, 116).withOpacity(0.2) : AppColors.mainColor,
                             height: 70,
                             child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(daysOfWeek[index], style: TextStyle(fontWeight: isToday ? FontWeight.bold : FontWeight.normal, color: isToday ? AppColors.mainColor : Colors.black)),
-                                  Text(formattedDate, style: TextStyle(fontWeight: isToday ? FontWeight.bold : FontWeight.normal, color: isToday ? AppColors.mainColor : Colors.black)),
-                                ],
+                              child: Padding(
+                                padding: const EdgeInsets.all(0.2),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(daysOfWeek[index], style: TextStyle(fontWeight: isToday ? FontWeight.bold : FontWeight.bold, color: isToday ? const Color.fromARGB(255, 0, 0, 0) : Colors.white)),
+                                    Text(formattedDate, style: TextStyle(fontWeight: isToday ? FontWeight.bold : FontWeight.bold, color: isToday ? const Color.fromARGB(255, 0, 0, 0) : Colors.white)),
+                                  ],
+                                ),
                               ),
                             ),
                           );
@@ -245,10 +248,10 @@ void _showAlertDialog(String title, String message) {
                       return TableRow(
                         children: [
                           Container(
-                            color: Colors.grey[300],
+                            color: AppColors.mainColor,
                             height: 100,
                             child: Center(
-                              child: Text(timeSlot, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                              child: Text(timeSlot, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                             ),
                           ),
                           ...List.generate(7, (index) {

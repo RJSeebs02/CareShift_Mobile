@@ -334,7 +334,7 @@ class _RegisterPageState extends State<RegisterPage> {
         onPressed: _signup,
         child: const Text(
           'Sign Up',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 255, 255, 255)),
         ),
       ),
     );

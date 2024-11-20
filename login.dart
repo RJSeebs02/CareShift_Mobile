@@ -187,7 +187,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         child: const Text(
           'Login',
-          style: TextStyle(color: Color(0xFF181A1D), fontSize: 16),
+          style: TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 16),
         ),
       ),
     );

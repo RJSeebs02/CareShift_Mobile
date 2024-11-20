@@ -77,9 +77,9 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text(
           'CareShift',
-          style: TextStyle(color: AppColors.mainLightColor),
+          style: TextStyle(color: AppColors.mainLightColor, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: AppColors.mainDarkColor,
+        backgroundColor: AppColors.mainColor,
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
