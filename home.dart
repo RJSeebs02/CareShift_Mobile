@@ -5,7 +5,6 @@ import 'package:careshift/pages/leave.dart';
 import 'package:careshift/pages/notifications.dart';
 import 'package:careshift/pages/profile.dart';
 import 'colors.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -77,9 +76,9 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text(
           'CareShift',
-          style: TextStyle(color: AppColors.mainLightColor, fontWeight: FontWeight.bold),
+          style: TextStyle(color: AppColors.mainLightColor),
         ),
-        backgroundColor: AppColors.mainColor,
+        backgroundColor: AppColors.appBarColor,
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
@@ -104,6 +103,11 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: Container(
         height: 80.0,
+        decoration: const BoxDecoration(
+          border: Border(
+            top: BorderSide(color: AppColors.borderColor, width: 1), // Add top border
+          ),
+        ),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           items: const <BottomNavigationBarItem>[
@@ -113,9 +117,11 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           ],
           currentIndex: _selectedIndex,
-          backgroundColor: AppColors.mainDarkColor,
-          unselectedItemColor: AppColors.mainLightColor,
-          selectedItemColor: AppColors.mainColor,
+          backgroundColor: AppColors.mainLightColor,
+          unselectedItemColor: AppColors.mainDarkColor,
+          selectedItemColor: AppColors.appBarColor,
+          showSelectedLabels: true, // Show labels for selected items
+          showUnselectedLabels: false, // Hide labels for unselected items
           onTap: _onItemTapped,
         ),
       ),

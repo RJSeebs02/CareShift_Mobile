@@ -177,7 +177,12 @@ class _RegisterPageState extends State<RegisterPage> {
     return Column(
       mainAxisSize: MainAxisSize.min, 
       children: [
-        const Icon(Icons.medical_information, size: 100),
+        Image.asset(
+          '../assets/logo.png', 
+          height: 64, 
+          width: double.infinity, 
+          fit: BoxFit.contain,
+        ),
         const SizedBox(height: 8), 
         const Text(
           'REGISTER', 
@@ -211,11 +216,23 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: _inputDecoration('Middle Name'),
                 ),
               ),
-              const SizedBox(width: 10.0),  
+            ],
+          ),
+          const SizedBox(height: 20.0),
+
+          Row(
+            children: [
               Expanded(
                 child: TextField(
                   controller: lastNameController,
                   decoration: _inputDecoration('Last Name'),
+                ),
+              ),
+              const SizedBox(width: 10.0),  
+              Expanded(
+                child: TextField(
+                  controller: emailController,
+                  decoration: _inputDecoration('Email'),
                 ),
               ),
             ],
@@ -245,13 +262,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: _inputDecoration('Contact Number'),
                 ),
               ),
+              const SizedBox(height: 20.0),
             ],
-          ),
-
-          const SizedBox(height: 20.0),
-          TextField(
-            controller: emailController,
-            decoration: _inputDecoration('Email'),
           ),
           const SizedBox(height: 20.0),
 
@@ -334,7 +346,7 @@ class _RegisterPageState extends State<RegisterPage> {
         onPressed: _signup,
         child: const Text(
           'Sign Up',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 255, 255, 255)),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
     );

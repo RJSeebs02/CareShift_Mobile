@@ -9,13 +9,12 @@ Future<void> main() async {
   bool? validation = prefs.getBool('validation');
 
   runApp(MaterialApp(
-    title: 'CareShift',
-    debugShowCheckedModeBanner: false,
+    title: 'CareShift', 
     initialRoute: validation == null || !validation ? '/' : '/home',
+    debugShowCheckedModeBanner: false,
     routes: {
       '/': (context) => const LoginPage(),
       '/home': (context) => const HomePage(),
     },
   ));
 }
-

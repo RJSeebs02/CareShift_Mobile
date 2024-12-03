@@ -100,7 +100,11 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 50),
-              const Icon(Icons.medical_information, size: 100),
+              Image.asset(
+                'assets/logo.png', 
+                height: 100,         
+                width: 100,          
+              ),
               _buildTitle(),
               _buildSubtitle(),
               _buildLoginForm(),
@@ -187,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         child: const Text(
           'Login',
-          style: TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 16),
+          style: TextStyle(color: Color(0xFF181A1D), fontSize: 16),
         ),
       ),
     );
