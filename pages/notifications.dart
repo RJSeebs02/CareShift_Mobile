@@ -85,77 +85,60 @@ class _NotificationPageState extends State<NotificationPage> {
   }
 
   @override
- Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
   return Scaffold(
     body: Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start, // Align children to the start (left)
-        children: [
-          Align(
-            alignment: Alignment.centerLeft, // Aligns text to the left
-            child: const Text(
-              'Notifications', // Title text
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          const SizedBox(height: 16), // Add some spacing between title and list
-          Expanded(
-            child: ListView.builder(
-              itemCount: notifications.length,
-              itemBuilder: (context, index) {
-                final notification = notifications[index];
-                return InkWell(
-                  onTap: () => _showNotificationDetails(context, notification), // Show details on tap
-                  child: Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8.0),
-                    elevation: 4.0,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                        notification['title']!,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    const SizedBox(height: 4),
-                          const SizedBox(height: 4),
-                          // Timestamp of the notification
-                          Text(
-                            'Date Filed: ${notification['timestamp']}',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey[500],
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          // Date for the notification
-                          Text(
-                            'Date: ${notification['datestamp']}',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey[500],
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                        ],
+      child: ListView.builder(
+        itemCount: notifications.length,
+        itemBuilder: (context, index) {
+          final notification = notifications[index]; // Get notification
+          return InkWell(
+            onTap: () => _showNotificationDetails(context, notification), // Show details on tap
+            child: Card(
+              margin: const EdgeInsets.symmetric(vertical: 8.0),
+              elevation: 4.0,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Title of notification
+                    Text(
+                      notification['title']!,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                );
-              },
+                    const SizedBox(height: 4),
+                    // Timestamp of the notification
+                    Text(
+                      'Date Filed: ${notification['timestamp']}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[500],
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    // Date for the notification
+                    Text(
+                      'Date: ${notification['datestamp']}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[500],
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                  ],
+                ),
+              ),
             ),
-          ),
-        ],
+          );
+        },
       ),
     ),
   );
 }
+
 }
