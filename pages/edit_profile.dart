@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class EditProfilePage extends StatefulWidget {
   final String nurseId;
@@ -33,10 +35,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
   late TextEditingController _emailController;
   late TextEditingController _contactController;
 
+  // Declare the image and image picker
+  XFile? _image;
+  final ImagePicker _picker = ImagePicker();
+
   @override
   void initState() {
     super.initState();
-    // Initialize the controllers with the initial values
     _firstNameController = TextEditingController(text: widget.initialFirstName);
     _middleNameController = TextEditingController(text: widget.initialMiddleName);
     _lastNameController = TextEditingController(text: widget.initialLastName);
@@ -68,6 +73,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return null;
   }
 
+  // Pick an image from the gallery and update the state
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = pickedFile;
+      });
+    }
+  }
+
   Future<void> updateProfile() async {
     final url = 'https://careshift.helioho.st/mobile/serve/nurse/update.php';
     final response = await http.post(
@@ -80,6 +95,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         'nurse_lname': _lastNameController.text,
         'nurse_email': _emailController.text,
         'nurse_contact': _contactController.text,
+        
       }),
     );
 
@@ -112,6 +128,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Display the current or selected image
+              Center(
+                child: _image == null
+                    ? const CircleAvatar(
+                        radius: 50,
+                        child: Icon(Icons.account_circle, size: 50),
+                      )
+                    : CircleAvatar(
+                        radius: 50,
+                        backgroundImage: FileImage(File(_image!.path)),
+                      ),
+              ),
+              TextButton(
+                onPressed: _pickImage,
+                child: const Text('Update Profile Image'),
+              ),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: _firstNameController,
                 decoration: const InputDecoration(labelText: 'First Name'),
@@ -147,6 +180,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 keyboardType: TextInputType.phone,
                 validator: _validateContact,
               ),
+              const SizedBox(height: 20),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {

@@ -63,59 +63,69 @@ class _SchedulePageState extends State<SchedulePage> {
 
   // Function to fetch schedules from the API
   Future<void> _fetchSchedules() async {
-    if (nurseId == null) return; // Return if nurseId is not set
+  if (nurseId == null) return; // Return if nurseId is not set
 
-    final weekStartDate = DateFormat('yyyy-MM-dd').format(_currentWeekStart);
-    final weekEndDate = DateFormat('yyyy-MM-dd').format(_currentWeekStart.add(Duration(days: 6)));
+  final weekStartDate = DateFormat('yyyy-MM-dd').format(_currentWeekStart);
+  final weekEndDate = DateFormat('yyyy-MM-dd').format(_currentWeekStart.add(Duration(days: 6)));
 
-    final response = await http.get(Uri.parse('https://careshift.helioho.st/mobile/serve/schedule/read.php?nurse_id=$nurseId'));
+  final response = await http.get(Uri.parse('https://careshift.helioho.st/mobile/serve/schedule/read.php?nurse_id=$nurseId'));
 
-    if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
-      _shifts = {}; // Clear existing shifts
+  if (response.statusCode == 200) {
+    final List<dynamic> data = json.decode(response.body);
 
-      for (var shift in data) {
-        String date = shift['sched_date']; // Corrected key
-        String start = shift['sched_start_time']; // Corrected key
-        String end = shift['sched_end_time']; // Corrected key
+    // Print the data to the console to check if sched_type is present
+    print(data);  // This will print the entire JSON response
 
-        // Parse start and end times into DateTime objects
-        DateTime startTime = DateFormat('yyyy-MM-dd HH:mm').parse('$date $start');
-        DateTime endTime = DateFormat('yyyy-MM-dd HH:mm').parse('$date $end');
+    _shifts = {}; // Clear existing shifts
 
-        // Check if the shift spans midnight (i.e., starts on one day and ends on the next day)
-        if (startTime.isBefore(endTime)) {
-          // Shift doesn't span midnight, just add it as is
-          _addShift(date, start, end);
-        } else {
-          // Split the shift into two parts
-          String firstDay = DateFormat('yyyy-MM-dd').format(startTime);
-          String secondDay = DateFormat('yyyy-MM-dd').format(startTime.add(Duration(days: 1)));
+    for (var shift in data) {
+      String date = shift['sched_date']; // Corrected key
+      String start = shift['sched_start_time']; // Corrected key
+      String end = shift['sched_end_time']; // Corrected key
+      String schedType = shift['sched_type'];  // Access sched_type from the API response
 
-          // First part: 22:00-24:00
-          _addShift(firstDay, start, '24:59');
+      // Print sched_type to verify if it's being fetched
+      print('sched_type: $schedType');
 
-          // Second part: 00:00-06:00
-          _addShift(secondDay, '00:00', end);
-        }
+      // Parse start and end times into DateTime objects
+      DateTime startTime = DateFormat('yyyy-MM-dd HH:mm').parse('$date $start');
+      DateTime endTime = DateFormat('yyyy-MM-dd HH:mm').parse('$date $end');
+
+      // Check if the shift spans midnight (i.e., starts on one day and ends on the next day)
+      if (startTime.isBefore(endTime)) {
+        // Shift doesn't span midnight, just add it as is
+        _addShift(date, start, end, schedType);  // Pass sched_type to _addShift
+      } else {
+        // Split the shift into two parts
+        String firstDay = DateFormat('yyyy-MM-dd').format(startTime);
+        String secondDay = DateFormat('yyyy-MM-dd').format(startTime.add(Duration(days: 1)));
+
+        // First part: 22:00-24:00
+        _addShift(firstDay, start, '24:59', schedType);
+
+        // Second part: 00:00-06:00
+        _addShift(secondDay, '00:00', end, schedType);
       }
-
-      setState(() {}); // Update the UI with new data
-    } else if (response.statusCode == 404) {
-      _showAlertDialog("No Schedule Found", "No schedules found for the week.");
-    } else {
-      // Handle error
-      print('Failed to load schedules: ${response.statusCode}');
     }
+
+    setState(() {}); // Update the UI with new data
+  } else if (response.statusCode == 404) {
+    _showAlertDialog("No Schedule Found", "No schedules found for the week.");
+  } else {
+    // Handle error
+    print('Failed to load schedules: ${response.statusCode}');
   }
+}
+
 
 // Helper function to add a shift to the shifts map
-void _addShift(String date, String start, String end) {
+void _addShift(String date, String start, String end, String schedType) {
   if (!_shifts.containsKey(date)) {
     _shifts[date] = [];
   }
-  _shifts[date]!.add({'start': start, 'end': end, 'room': ''}); // Empty room or provide value if needed
+  _shifts[date]!.add({'start': start, 'end': end, 'room': '', 'sched_type': schedType}); // Add sched_type to the map
 }
+
 
 // Function to show an alert dialog
 void _showAlertDialog(String title, String message) {
@@ -160,24 +170,29 @@ Widget _buildShiftCell(DateTime date, String timeSlot) {
     }
   });
 
-  String room = shifts != null && shifts.isNotEmpty
-      ? shifts.firstWhere(
-          (shift) => _parseHour(shift['start']!) <= timeSlotHour && timeSlotHour < _parseHour(shift['end']!),
-          orElse: () => {'room': ''},
-        )['room']!
-      : ''; // Fallback if there are no shifts available
+  // Check if sched_type is 'Leave'
+  bool isLeave = shifts?.any((shift) => shift['sched_type'] == 'Leave') ?? false;
+
+  String room = shifts?.firstWhere(
+    (shift) => _parseHour(shift['start']!) <= timeSlotHour && timeSlotHour < _parseHour(shift['end']!),
+    orElse: () => {'room': ''},  // Provide a fallback empty map if no match is found
+  )['room'] ?? '';  // Fallback to empty string if 'room' is not found
 
   return Container(
     height: 25,
     decoration: BoxDecoration(
-      border: isShiftTime ? Border.all(color: const Color.fromARGB(255, 0, 0, 0)) : null,
-      color: isShiftTime ? AppColors.mainColor : Colors.white,
+      border: isShiftTime ? Border.all(color: Color.fromARGB(255, 73, 73, 73)) : null,
+      color: isLeave ? Color.fromARGB(255, 250, 81, 81) : (isShiftTime ? AppColors.mainColor : Colors.white), // Red for Leave, Blue for Shift
     ),
     child: Center(
       child: Text(room, textAlign: TextAlign.center),
     ),
   );
 }
+
+
+
+
 
 
   int _parseHour(String hourString) {
