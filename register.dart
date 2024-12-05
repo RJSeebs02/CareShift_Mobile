@@ -178,7 +178,7 @@ class _RegisterPageState extends State<RegisterPage> {
       mainAxisSize: MainAxisSize.min, 
       children: [
         Image.asset(
-          '../assets/logo.png', 
+          'assets/logo.png', 
           height: 64, 
           width: double.infinity, 
           fit: BoxFit.contain,
