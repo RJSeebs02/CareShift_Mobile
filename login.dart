@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
         break;
       default:
         setState(() {
-          errorMessage = 'An unexpected error occurred. Please try again later.';
+          errorMessage = 'Incorrect email or password.';
         });
     }
   }
@@ -180,18 +180,20 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  
+
   Widget _buildLoginButton() {
     return GestureDetector(
       onTap: _login,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
         decoration: BoxDecoration(
-          color: const Color(0xFF7BB9FA),
+          color: AppColors.appBarColor,
           borderRadius: BorderRadius.circular(10),
         ),
         child: const Text(
           'Login',
-          style: TextStyle(color: Color(0xFF181A1D), fontSize: 16),
+          style: TextStyle(color: AppColors.lightColor, fontSize: 16),
         ),
       ),
     );

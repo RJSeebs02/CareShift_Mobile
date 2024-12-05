@@ -121,11 +121,20 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your new password';
                   }
-                  if (value.length < 8) {
-                    return 'Password must be at least 8 characters';
-                  }
-                  // You can add more password validation here (e.g., special characters)
-                  return null;
+
+                  // Password policy check
+                  final RegExp passwordPolicy = RegExp(
+                      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$');
+                  if (!passwordPolicy.hasMatch(value)) {
+                    return 'Password must meet the following criteria:\n'
+                            '- At least 8 characters\n'
+                            '- Include an uppercase letter\n'
+                            '- Include a lowercase letter\n'
+                            '- Include a number\n'
+                            '- Include a special character';
+                    }
+
+                  return null; // Valid password
                 },
               ),
               TextFormField(
