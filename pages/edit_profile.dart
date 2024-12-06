@@ -149,13 +149,35 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 validator: _validateContact,
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    updateProfile();
-                  }
-                },
-                child: const Text('Save Changes'),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      updateProfile();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue, // Button background color
+                    foregroundColor: Colors.white, // Text color
+                    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Rounded corners
+                    ),
+                    elevation: 5, // Shadow effect
+                  ).copyWith(
+                    elevation: MaterialStateProperty.resolveWith<double>(
+                      (states) => states.contains(MaterialState.hovered) ? 10 : 5, // Increase elevation on hover
+                    ),
+                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                      (states) =>
+                          states.contains(MaterialState.hovered) ? Colors.blueAccent : Colors.blue, // Lighter color on hover
+                    ),
+                  ),
+                  child: const Text(
+                    'Save Changes',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
             ],
           ),

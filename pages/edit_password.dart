@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../colors.dart';
 
 class EditPasswordPage extends StatefulWidget {
   final String nurseId;
@@ -160,7 +161,27 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
                           updatePassword();
                         }
                       },
-                      child: const Text('Save Changes'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.mainDarkColor, // Default button background color
+                        foregroundColor: Colors.white, // Text color
+                        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10), // Rounded corners
+                        ),
+                        elevation: 5, // Shadow effect
+                      ).copyWith(
+                        elevation: MaterialStateProperty.resolveWith<double>(
+                          (states) => states.contains(MaterialState.hovered) ? 10 : 5, // Higher shadow on hover
+                        ),
+                        backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                          (states) =>
+                              states.contains(MaterialState.hovered) ? const Color.fromARGB(255, 46, 49, 53) : AppColors.mainDarkColor, // Lighter green on hover
+                        ),
+                      ),
+                      child: const Text(
+                        'Save Changes',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
                     ),
             ],
           ),
